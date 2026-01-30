@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des étudiants</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: auto;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align:center;">Liste des étudiants</h2>
+
+<table>
+    <tr>
+        <th>Matricule</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Genre</th>
+    </tr>
+
+    {% for etu in etudiants %}
+    <tr>
+        <td>{{ etu.matricule }}</td>
+        <td>{{ etu.nom }}</td>
+        <td>{{ etu.prenom }}</td>
+        <td>{{ etu.genre }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

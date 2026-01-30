@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Liste des matières{% endblock %}
+
+{% block content %}
+
+<!-- 🔎 FILTRES -->
+<form method="get" class="row g-3 mb-4">
+
+    <!-- Année -->
+    <div class="col-md-3">
+        <select name="annee" class="form-select">
+            <option value="">-- Année --</option>
+            {% for a in annees %}
+                <option value="{{ a }}" {% if request.GET.annee == a %}selected{% endif %}>
+                    {{ a }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Mention -->
+    <div class="col-md-3">
+        <select name="mention" class="form-select">
+            <option value="">-- Mention --</option>
+            {% for m in mentions %}
+                <option value="{{ m }}" {% if request.GET.mention == m %}selected{% endif %}>
+                    {{ m }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Semestre -->
+    <div class="col-md-3">
+        <select name="semestre" class="form-select">
+            <option value="">-- Semestre --</option>
+            {% for s in semestres %}
+                <option value="{{ s }}" {% if request.GET.semestre == s %}selected{% endif %}>
+                    {{ s }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Boutons -->
+    <div class="col-md-3 d-flex gap-2">
+        <button class="btn btn-primary flex-grow-1">Filtrer</button>
+        <a href="{% url 'liste_matieres' %}" class="btn btn-outline-secondary flex-grow-1">Reset</a>
+    </div>
+
+</form>
+
+<p class="text-muted mb-3">
+    {{ matieres|length }} matière{{ matieres|length|pluralize }} trouvée{{ matieres|length|pluralize }}
+</p>
+
+<div class="row g-4">
+    {% for m in matieres %}
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ m.matiere }}</h5>
+                    <p class="mb-1"><strong>Mention :</strong> {{ m.mention }}</p>
+                    <p class="mb-1"><strong>Semestre :</strong> {{ m.semestre }}</p>
+                    <p><strong>Année :</strong> {{ m.annee }}</p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-center text-muted fs-5 mt-5">
+            Aucune matière trouvée.
+        </p>
+    {% endfor %}
+</div>
+
+{% endblock %}

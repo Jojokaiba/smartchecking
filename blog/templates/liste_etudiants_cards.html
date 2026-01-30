@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Étudiants{% endblock %}
+
+{% block content %}
+<h3 class="text-center mb-4">Liste des étudiants</h3>
+
+<!-- 🔹 FORMULAIRE DE FILTRE -->
+<form method="get" class="row g-3 mb-4">
+
+    <!-- Filtre Année -->
+    <div class="col-md-4">
+        <select name="annee" class="form-select">
+            <option value="">-- Année --</option>
+            <option value="L1" {% if request.GET.annee == "L1" %}selected{% endif %}>L1</option>
+            <option value="L2" {% if request.GET.annee == "L2" %}selected{% endif %}>L2</option>
+            <option value="L3" {% if request.GET.annee == "L3" %}selected{% endif %}>L3</option>
+        </select>
+    </div>
+
+    <!-- Filtre Mention -->
+    <div class="col-md-4">
+        <select name="mention" class="form-select">
+            <option value="">-- Mention --</option>
+            <option value="Informatique" {% if request.GET.mention == "Informatique" %}selected{% endif %}>Informatique</option>
+            <option value="Gestion" {% if request.GET.mention == "Gestion" %}selected{% endif %}>Gestion</option>
+            <option value="Droit" {% if request.GET.mention == "Droit" %}selected{% endif %}>Droit</option>
+            <option value="Economie" {% if request.GET.mention == "Economie" %}selected{% endif %}>Economie</option>
+        </select>
+    </div>
+
+    <!-- Boutons -->
+    <div class="col-md-4 d-flex gap-2">
+        <button class="btn btn-primary flex-grow-1">Filtrer</button>
+        <a href="{% url 'liste_etudiants' %}" class="btn btn-secondary flex-grow-1">Reset</a>
+    </div>
+
+</form>
+
+<!-- 🔹 LISTE DES ÉTUDIANTS -->
+<div class="row g-4">
+    {% if etudiants %}
+        {% for etu in etudiants %}
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ etu.nom }} {{ etu.prenom }}</h5>
+                    <p class="mb-1"><strong>Matricule :</strong> {{ etu.matricule }}</p>
+                    <p class="mb-1"><strong>Mention :</strong> {{ etu.nom_mention }}</p>
+                    <p class="mb-1"><strong>Genre :</strong> {{ etu.genre }}</p>
+                    <p><strong>Année :</strong> {{ etu.annee }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center mt-4">Aucun étudiant trouvé pour ces critères.</p>
+    {% endif %}
+</div>
+{% endblock %}
