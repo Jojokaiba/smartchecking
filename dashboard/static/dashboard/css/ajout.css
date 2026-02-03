@@ -1,0 +1,52 @@
+        .form-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            padding: 40px 30px;
+            width: 450px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .form-card h3 {
+            text-align: center;
+            color: #001f4d;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .form-card label {
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .form-card input,
+        .form-card select {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 0.95rem;
+        }
+
+        .form-card button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            background: #001f4d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .form-card button:hover {
+            background: #003366;
+        }
+
+        .form-card .alert {
+            font-size: 0.9rem;
+        }

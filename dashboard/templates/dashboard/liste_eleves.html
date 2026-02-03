@@ -1,0 +1,38 @@
+{% block content %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénoms</th>
+            <th>Email</th>
+            <th>Niveau</th>
+            <th>Mention</th>
+            <th>Photo</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% include 'dashboard/navbar.html'  with active_tab='liste_eleves' %}
+        {% for student in students %}
+        <tr>
+            <td>{{ student.nom }}</td>
+            <td>{{ student.prenoms }}</td>
+            <td>{{ student.user.email }}</td>
+            <td>{{ student.niveau }}</td>
+        <td>{{ student.mention }}</td>
+        <td>{{ student.photo }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Aucun élève trouvé</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
