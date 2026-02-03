@@ -14,10 +14,13 @@ CREATE TABLE semestre (
     annee VARCHAR(20)
 );
 
+CREATE TABLE role (
+    id_role SERIAL PRIMARY KEY,
+    nom_role VARCHAR(100) NOT NULL
+);
 
 CREATE TABLE etudiant (
     id_etudiant SERIAL PRIMARY KEY,
-    statut VARCHAR(50),
     matricule VARCHAR(50) UNIQUE NOT NULL,
     nom VARCHAR(100) NOT NULL,
     prenom VARCHAR(100),
@@ -25,6 +28,7 @@ CREATE TABLE etudiant (
     genre VARCHAR(10),
     id_mention INT,
     id_semestre INT,
+    id_role INT,
 
     CONSTRAINT fk_mention
         FOREIGN KEY (id_mention)
@@ -34,9 +38,13 @@ CREATE TABLE etudiant (
     CONSTRAINT fk_semestre
         FOREIGN KEY (id_semestre)
         REFERENCES semestre(id_semestre)
+        ON DELETE SET NULL,
+
+    CONSTRAINT fk_role
+        FOREIGN KEY (id_role)
+        REFERENCES role(id_role)
         ON DELETE SET NULL
 );
-
 
 CREATE TABLE matiere (
     id_matiere SERIAL PRIMARY KEY,
@@ -52,6 +60,24 @@ CREATE TABLE matiere (
     CONSTRAINT fk_matiere_mention
         FOREIGN KEY (id_mention)
         REFERENCES mention(id_mention)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE presence (
+    id_presence SERIAL PRIMARY KEY,
+    statut INT,    
+    date_presence  TIMESTAMP,    
+    id_etudiant INT,
+    id_matiere INT,
+
+    CONSTRAINT fk_presence_etudiant
+        FOREIGN KEY (id_etudiant)
+        REFERENCES etudiant(id_etudiant)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_presence_matiere
+        FOREIGN KEY (id_matiere)
+        REFERENCES matiere(id_matiere)
         ON DELETE CASCADE
 );
 
@@ -75,12 +101,17 @@ VALUES
 ('S5', 'L3'),
 ('S6', 'L3');
 
-INSERT INTO etudiant (statut,matricule, nom, prenom, date_naissance, genre, id_mention, id_semestre)
+INSERT INTO role (nom_role) VALUES
+('Etudiant'),
+('Delegue'),
+('Delegue suppleant');
+
+INSERT INTO etudiant (matricule, nom, prenom, date_naissance, genre, id_mention, id_semestre,id_role)
 VALUES
-('1','ETU001', 'Rakoto', 'Jean', '2002-05-12', 'M', 1, 1),
-('1','ETU002', 'Rabe', 'Marie', '2003-01-20', 'F', 1, 1),
-('2','ETU003', 'Randria', 'Paul', '2001-11-03', 'M', 2, 2),
-('1','ETU004', 'Andriamanitra', 'Sofia', '2002-08-15', 'F', 3, 1);
+('ETU001', 'Rakoto', 'Jean', '2002-05-12', 'M', 1, 1, 1),
+('ETU002', 'Rabe', 'Marie', '2003-01-20', 'F', 1, 1, 1),
+('ETU003', 'Randria', 'Paul', '2001-11-03', 'M', 2, 2, 2),
+('ETU004', 'Andriamanitra', 'Sofia', '2002-08-15', 'F', 3, 1, 3);
 
 
 INSERT INTO matiere (nom_matiere, id_semestre, id_mention)
@@ -89,18 +120,17 @@ VALUES
 ('Programmation Java', 2, 1),
 ('Base de données', 1, 1),
 
-('Comptabilité Générale', 1, 2),
+('Comptabilite Generale', 1, 2),
 ('Management', 2, 2),
 
 ('Droit Civil', 1, 3),
-('Microéconomie', 1, 4);
+('Microeconomie', 1, 4);
 
 
 
 CREATE VIEW etudiant_all AS
 SELECT
     e.id_etudiant,
-    e.statut,
     e.matricule,
     e.nom,
     e.prenom,
@@ -109,7 +139,7 @@ SELECT
     m.nom_mention,
     s.semestre,
     s.annee
-
+    
 FROM etudiant e
 LEFT JOIN mention m
     ON e.id_mention = m.id_mention

@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from .models import EtudiantAll
 from .models import MatiereAll
+from django.db import connection
+from django.shortcuts import render, redirect
+
+
 
 def liste_etudiants_cards(request):
     """
@@ -8,20 +12,16 @@ def liste_etudiants_cards(request):
     avec filtres dynamiques sur Année et Mention.
     """
 
-    # 🔹 1. Récupérer les filtres depuis l'URL (GET)
-    annee = request.GET.get('annee')       # Exemple : 'L1', 'L2', 'L3', ou None
-    mention = request.GET.get('mention')   # Exemple : 'Informatique', 'Gestion', etc., ou None
+    annee = request.GET.get('annee')   
+    mention = request.GET.get('mention')  
 
-    # 🔹 2. Queryset de base : tous les étudiants
     etudiants = EtudiantAll.objects.all()
 
-    # 🔹 3. Appliquer les filtres si ils existent
     if annee:
         etudiants = etudiants.filter(annee=annee)
     if mention:
         etudiants = etudiants.filter(nom_mention=mention)
 
-    # 🔹 4. Envoyer le queryset filtré au template
     return render(request, 'liste_etudiants_cards.html', {
         'etudiants': etudiants
     })
@@ -67,4 +67,32 @@ def liste_matieres(request):
     }
 
     return render(request, 'liste_matieres.html', context)
+
+
+def ajouter_matiere(request):
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT id_mention, nom_mention FROM mention")
+        mentions = cursor.fetchall()
+
+        cursor.execute("SELECT id_semestre, semestre, annee FROM semestre")
+        semestres = cursor.fetchall()
+
+    if request.method == "POST":
+        nom_matiere = request.POST.get("nom_matiere")
+        id_mention = request.POST.get("id_mention")
+        id_semestre = request.POST.get("id_semestre")
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO matiere (nom_matiere, id_mention, id_semestre)
+                VALUES (%s, %s, %s)
+            """, [nom_matiere, id_mention, id_semestre])
+
+        return redirect("ajouter_matiere")
+
+    return render(request, "ajouter_matiere.html", {
+        "mentions": mentions,
+        "semestres": semestres
+    })
 

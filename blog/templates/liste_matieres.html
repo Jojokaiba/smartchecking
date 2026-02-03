@@ -3,10 +3,32 @@
 
 {% block content %}
 
-<!-- 🔎 FILTRES -->
+<style>
+    .border-dashed {
+        border: 2px dashed #0d6efd;
+    }
+
+    .add-card {
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+    }
+
+    .add-card:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.03);
+    }
+
+    .matiere-title {
+        font-size: 1.5rem;
+        color: #0d6efd;
+        font-weight: bold; 
+    }
+</style>
+
+
 <form method="get" class="row g-3 mb-4">
 
-    <!-- Année -->
+<h3 class="mb-4">Liste des matières</h3>
     <div class="col-md-3">
         <select name="annee" class="form-select">
             <option value="">-- Année --</option>
@@ -18,7 +40,6 @@
         </select>
     </div>
 
-    <!-- Mention -->
     <div class="col-md-3">
         <select name="mention" class="form-select">
             <option value="">-- Mention --</option>
@@ -30,7 +51,7 @@
         </select>
     </div>
 
-    <!-- Semestre -->
+
     <div class="col-md-3">
         <select name="semestre" class="form-select">
             <option value="">-- Semestre --</option>
@@ -42,7 +63,6 @@
         </select>
     </div>
 
-    <!-- Boutons -->
     <div class="col-md-3 d-flex gap-2">
         <button class="btn btn-primary flex-grow-1">Filtrer</button>
         <a href="{% url 'liste_matieres' %}" class="btn btn-outline-secondary flex-grow-1">Reset</a>
@@ -55,11 +75,28 @@
 </p>
 
 <div class="row g-4">
+    <div class="col-md-4">
+        <a href="{% url 'ajouter_matiere' %}" class="text-decoration-none">
+            <div class="card h-100 shadow-sm border-dashed add-card">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+
+                    <div class="display-1 fw-bold text-primary">+</div>
+
+                    <h5 class="mt-2 text-primary">
+                        Ajouter matière
+                    </h5>
+
+                </div>
+            </div>
+        </a>
+    </div>
+
+
     {% for m in matieres %}
         <div class="col-md-4">
             <div class="card shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title">{{ m.matiere }}</h5>
+                    <h5 class="card-title matiere-title">{{ m.matiere }}</h5>
                     <p class="mb-1"><strong>Mention :</strong> {{ m.mention }}</p>
                     <p class="mb-1"><strong>Semestre :</strong> {{ m.semestre }}</p>
                     <p><strong>Année :</strong> {{ m.annee }}</p>
@@ -71,6 +108,7 @@
             Aucune matière trouvée.
         </p>
     {% endfor %}
+
 </div>
 
 {% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Ajouter une matière{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h3 class="mb-4">Ajouter une matière</h3>
+
+    <form method="post" class="card p-4 shadow-sm">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Nom de la matière</label>
+            <input type="text" name="nom_matiere" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mention</label>
+            <select name="id_mention" class="form-select" required>
+                <option value="">-- Choisir une mention --</option>
+                {% for m in mentions %}
+                    <option value="{{ m.0 }}">{{ m.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Semestre</label>
+            <select name="id_semestre" class="form-select" required>
+                <option value="">-- Choisir un semestre --</option>
+                {% for s in semestres %}
+                    <option value="{{ s.0 }}">
+                        {{ s.1 }} ({{ s.2 }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button class="btn btn-primary w-100">
+            Enregistrer
+        </button>
+    </form>
+</div>
+
+{% endblock %}
