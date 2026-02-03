@@ -1,0 +1,48 @@
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'accounts/css/login.css' %}">
+
+<div class="login-card">
+    <div class="logo">
+        <img src="{% static 'accounts/logo.png' %}" alt="Logo">
+    </div>
+
+    <h2>CONNEXION ADMIN</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+         <div class="password-wrapper">
+            <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Mot de passe"
+                required
+            >
+            <span onclick="togglePassword()">👁</span>
+        </div>
+
+        <div class="remember-me">
+            <input type="checkbox" name="remember_me" id="remember_me">
+            <label for="remember_me">Se souvenir de moi</label>
+        </div>
+
+        <button type="submit">LOGIN</button>
+    </form>
+</div>
+    <script>
+function togglePassword() {
+    const pwd = document.getElementById("password");
+    pwd.type = pwd.type === "password" ? "text" : "password";
+}
+</script>
+{% endblock %}
