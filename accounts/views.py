@@ -26,11 +26,11 @@ def login_view(request):
             # Redirection selon le rôle stocké dans user.role
             # Ici on suppose que le User a un champ role ou une propriété définie ailleurs
             role = getattr(user, 'role', None)
-            if role == 'ADMIN':
-                return redirect('admin_dashboard')
-            elif role == 'DELEGATE':
+            if user and user.role == 'ADMIN':
+                return HttpResponseForbidden("Accès refusé aux administrateurs")
+            if user and user.role == 'DELEGATE':
                 return redirect('delegue_page')
-            elif role == 'ELEVE':
+            elif user and user.role == 'ELEVE':
                 return redirect('eleve_page')
             else:
                 messages.error(request, "Rôle inconnu")
