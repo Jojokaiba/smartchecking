@@ -60,6 +60,11 @@ def delegue_page(request):
     if request.user.role != 'DELEGATE':
         return HttpResponseForbidden("Accès refusé")
     return render(request, 'accounts/delegue.html')
+@role_required('SUPPLEANT')
+def delegue_page(request):
+    if request.user.role != 'SUPPLEANT':
+        return HttpResponseForbidden("Accès refusé")
+    return render(request, 'accounts/delegue.html')
 
 @role_required('ELEVE')
 def eleve_page(request):
