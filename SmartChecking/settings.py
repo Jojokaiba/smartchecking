@@ -38,10 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
-<<<<<<< Updated upstream
-=======
     'dashboard',
->>>>>>> Stashed changes
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
