@@ -5,6 +5,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
+from accounts.decorators import role_required
+
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -46,20 +49,49 @@ def logout_view(request):
 # -----------------------
 # PAGES PAR ROLE
 # -----------------------
-@login_required
+@role_required('ADMIN')
 def admin_dashboard(request):
     if request.user.role != 'ADMIN':
         return HttpResponseForbidden("Accès refusé")
     return render(request, 'accounts/admin_dashboard.html')
 
-@login_required
+@role_required('DELEGATE')
 def delegue_page(request):
     if request.user.role != 'DELEGATE':
         return HttpResponseForbidden("Accès refusé")
     return render(request, 'accounts/delegue.html')
 
-@login_required
+@role_required('ELEVE')
 def eleve_page(request):
     if request.user.role != 'ELEVE':
         return HttpResponseForbidden("Accès refusé")
     return render(request, 'accounts/eleve.html')
+def admin_login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user:
+            if user.role != 'ADMIN':
+                return HttpResponseForbidden("Accès réservé à l'administrateur")
+
+            login(request, user)
+
+            # ✅ redirection vers le dashboard → ajout élève
+            return redirect('ajout_eleve')
+
+        messages.error(request, "Identifiants incorrects")
+
+    return render(request, 'accounts/admin_login.html')
+def admin_view(request):
+    # 🔐 Pas connecté → login admin
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+
+    # ❌ Mauvais rôle
+    if request.user.role != 'ADMIN':
+        return HttpResponseForbidden("Accès réservé à l'administrateur")
+
+    # ✅ Admin connecté → dashboard
+    return redirect('ajout_eleve')
