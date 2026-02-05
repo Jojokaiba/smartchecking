@@ -10,7 +10,7 @@ def role_required(*roles):
         def wrapper(request, *args, **kwargs):
             if not request.user.is_authenticated:
                 return redirect('login')
-            if request.user.role != roles:
+            if request.user.role not in roles:
                 return HttpResponseForbidden("Accès interdit")
             return view_func(request, *args, **kwargs)
 
