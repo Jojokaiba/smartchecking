@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+# utilise User de Django et pourra être lié à Student plus tard, juste modele pour les roles
 class User(AbstractUser):
     ROLE_CHOICES = (
         ('ADMIN', 'Admin'),

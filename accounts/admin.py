@@ -2,12 +2,11 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User
 
-
+#ce qu'on voit dans le dashboard admin de Django
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     model = User
 
-    # 🔹 méthodes locales à l’admin
     def nom(self, obj):
         if hasattr(obj, 'student'):
             return obj.student.nom
@@ -37,7 +36,6 @@ class CustomUserAdmin(UserAdmin):
 
     ordering = ('username',)
 
-    # Champs visibles dans la page détail
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Informations personnelles', {
@@ -50,7 +48,6 @@ class CustomUserAdmin(UserAdmin):
         ('Dates importantes', {'fields': ('last_login', 'date_joined')}),
     )
 
-    # Champs visibles lors de la création
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -66,5 +63,3 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
-
-# Register your models here.

@@ -33,6 +33,8 @@ def login_view(request):
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect")
 
     return render(request, 'accounts/login.html')
+
+
 # -----------------------
 # LOGOUT
 # -----------------------
@@ -44,22 +46,19 @@ def logout_view(request):
 # -----------------------
 # PAGES PAR ROLE
 # -----------------------
-@role_required('ADMIN')
-def admin_dashboard(request):
-    return render(request, 'accounts/admin_dashboard.html')
-
-
 @login_required
 def delegue_page(request):
     if request.user.role not in ['DELEGATE', 'SUPPLEANT']:
         return HttpResponseForbidden("Accès refusé")
     return render(request, 'accounts/delegue.html')
 
+
 @role_required('ELEVE')
 def eleve_page(request):
     if request.user.role != 'ELEVE':
         return HttpResponseForbidden("Accès refusé")
     return render(request, 'accounts/eleve.html')
+
 
 def admin_login_view(request):
     if request.method == 'POST':
@@ -78,6 +77,7 @@ def admin_login_view(request):
         messages.error(request, "Identifiants incorrects")
 
     return render(request, 'accounts/admin_login.html')
+
 
 @login_required
 def admin_view(request):
