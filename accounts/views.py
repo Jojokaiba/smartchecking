@@ -14,26 +14,21 @@ def login_view(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user:
+            if user.role == 'ADMIN':
+                return HttpResponseForbidden("Veuillez utiliser l'accès administrateur")
+
             login(request, user)
 
             remember_me = request.POST.get('remember_me')
+            request.session.set_expiry(1209600 if remember_me else 0)
 
-            if not remember_me:
-                request.session.set_expiry(0)  # session expire à la fermeture du navigateur
-            else:
-                request.session.set_expiry(1209600)  # 2 semaines
-
-            # Redirection selon le rôle stocké dans user.role
-            # Ici on suppose que le User a un champ role ou une propriété définie ailleurs
-            role = getattr(user, 'role', None)
-            if user and user.role == 'ADMIN':
-                return HttpResponseForbidden("Accès refusé aux administrateurs")
-            if user and user.role == 'DELEGATE':
+            if user.role == 'DELEGATE':
                 return redirect('delegue_page')
-            elif user and user.role == 'ELEVE':
+            elif user.role == 'ELEVE':
                 return redirect('eleve_page')
-            else:
-                messages.error(request, "Rôle inconnu")
+
+            messages.error(request, "Rôle inconnu")
+
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect")
 
@@ -51,18 +46,12 @@ def logout_view(request):
 # -----------------------
 @role_required('ADMIN')
 def admin_dashboard(request):
-    if request.user.role != 'ADMIN':
-        return HttpResponseForbidden("Accès refusé")
     return render(request, 'accounts/admin_dashboard.html')
 
-@role_required('DELEGATE')
+
+@login_required
 def delegue_page(request):
-    if request.user.role != 'DELEGATE':
-        return HttpResponseForbidden("Accès refusé")
-    return render(request, 'accounts/delegue.html')
-@role_required('SUPPLEANT')
-def delegue_page(request):
-    if request.user.role != 'SUPPLEANT':
+    if request.user.role not in ['DELEGATE', 'SUPPLEANT']:
         return HttpResponseForbidden("Accès refusé")
     return render(request, 'accounts/delegue.html')
 
@@ -71,6 +60,7 @@ def eleve_page(request):
     if request.user.role != 'ELEVE':
         return HttpResponseForbidden("Accès refusé")
     return render(request, 'accounts/eleve.html')
+
 def admin_login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -83,20 +73,15 @@ def admin_login_view(request):
 
             login(request, user)
 
-            # ✅ redirection vers le dashboard → ajout élève
             return redirect('ajout_eleve')
 
         messages.error(request, "Identifiants incorrects")
 
     return render(request, 'accounts/admin_login.html')
-def admin_view(request):
-    # 🔐 Pas connecté → login admin
-    if not request.user.is_authenticated:
-        return redirect('admin_login')
 
-    # ❌ Mauvais rôle
+@login_required
+def admin_view(request):
     if request.user.role != 'ADMIN':
         return HttpResponseForbidden("Accès réservé à l'administrateur")
 
-    # ✅ Admin connecté → dashboard
     return redirect('ajout_eleve')
