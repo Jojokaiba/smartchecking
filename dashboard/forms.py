@@ -2,9 +2,11 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-
 from .models import Student
+
 User = get_user_model()
+
+
 class StudentCreateForm(forms.ModelForm):
     username = forms.CharField(label="Nom d'utilisateur")
     email = forms.EmailField(label="Email de l'étudiant")
@@ -13,6 +15,7 @@ class StudentCreateForm(forms.ModelForm):
     mention = forms.ChoiceField(choices=Student.MENTION_CHOICES, label="Mention")
     niveau = forms.ChoiceField(choices=Student.LEVEL_CHOICES, label="Niveau")
     photo = forms.ImageField(label="Photo de l'étudiant", required=True)
+
     class Meta:
         model = Student
         fields = [
@@ -27,7 +30,8 @@ class StudentCreateForm(forms.ModelForm):
             'password',
 
         ]
- # -------------------
+
+    # -------------------
     # Validation backend
     # -------------------
     def clean(self):
@@ -48,3 +52,10 @@ class StudentCreateForm(forms.ModelForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("Cet email est déjà utilisé.")  # <-- valide
         return email
+
+
+def clean_username(self):
+    username = self.cleaned_data.get('username')
+    if User.objects.filter(username=username).exists():
+        raise forms.ValidationError("Ce nom d'utilisateur est déjà utilisé.")
+    return username

@@ -4,7 +4,6 @@ from django.db import models
 
 
 class Student(models.Model):
-
     LEVEL_CHOICES = [
         ('L1', 'Licence 1'),
         ('L2', 'Licence 2'),
