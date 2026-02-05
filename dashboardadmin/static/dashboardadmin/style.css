@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    padding: 30px;
+}
+
+h1 {
+    margin-bottom: 30px;
+}
+
+.cards {
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 3 colonnes au lieu de 4 */
+    gap: 20px;
+    width: 100%; /* Prend toute la largeur disponible */
+}
+
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.card h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #666;
+}
+
+
+
+/* ❌ SUPPRIMÉ : display flex ici */
+.analytics-layout {
+    width: 100%;
+}
+
+.progress-card {
+    text-align: center;
+}
+
+/* SVG */
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring__background {
+    fill: none;
+    stroke: #eee;
+    stroke-width: 10;
+}
+
+.progress-ring__circle {
+    fill: none;
+    stroke: #5b6cff;
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 440;
+    stroke-dashoffset: var(--dashoffset);
+    transition: stroke-dashoffset 0.8s ease;
+}
+
+/* TEXTE AU CENTRE */
+.progress-text {
+    fill: #000;
+    font-size: 28px;
+    font-weight: bold;
+    transform: rotate(90deg);
+    transform-origin: 50% 50%;
+}
+
+/* TABLES */
+.table-presence {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}

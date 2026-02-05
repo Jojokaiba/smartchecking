@@ -1,0 +1,151 @@
+{% extends "dashboardadmin/base.html" %}
+
+{% block content %}
+<h1>Analytics Dashboard</h1>
+
+<div class="cards mt-4">
+    <div class="card" style="border-top: 5px solid blue;">
+        <p>Nom: {{ nom }}</p>
+        <p>Prénom : {{ prenom }}</p>
+        <p>Matricule : {{ matricule }}</p>
+    </div>
+
+
+    <div class="card" style="border-top: 5px solid red;">
+        <p>Email : {{ email }} </p>
+        <p>Numéro de téléphone : {{ numero }}</p>
+    </div>
+
+    <div class="card" style="border-top: 5px solid blue;">
+        <p>Mention : {{ mention }}</p>
+        <p>Niveau : {{ niveau }}</p>
+        <p>Parcours : {{ parcours }}</p>
+    </div>
+
+    <div class="card" style="border-top: 5px solid red;">
+        <h2>{{ role }} </h2>
+        <p>Rôle</p>
+    </div>
+
+</div>
+
+<div class="container-fluid mt-4">
+  <div class="row align-items-start">
+
+    <!-- COLONNE CERcles -->
+    <div class="col-lg-3 col-md-4">
+      <div class="pourcentage-ring">
+
+        <div class="progress-card mb-5">
+          <h5 class="text-center">Prédiction générale</h5>
+
+          <svg class="progress-ring mx-auto d-block" width="160" height="160" viewBox="0 0 160 160">
+            <circle class="progress-ring__background" cx="80" cy="80" r="70"/>
+            <circle class="progress-ring__circle"
+              cx="80" cy="80" r="70"
+              style="--dashoffset: {{ dashoffset_general }};" />
+            <text x="80" y="80" text-anchor="middle"
+              dominant-baseline="middle" class="progress-text">
+              {{ risque_echec_general }}%
+            </text>
+          </svg>
+
+          <p class="text-center">Risque d'échec en général</p>
+        </div>
+
+        <div class="progress-card">
+          <h5 class="text-center">Prédiction par matière</h5>
+
+          <svg class="progress-ring mx-auto d-block" width="160" height="160" viewBox="0 0 160 160">
+            <circle class="progress-ring__background" cx="80" cy="80" r="70"/>
+            <circle class="progress-ring__circle"
+              cx="80" cy="80" r="70"
+              style="--dashoffset: {{ dashoffset_matiere }};" />
+            <text x="80" y="80" text-anchor="middle"
+              dominant-baseline="middle" class="progress-text">
+              {{ risque_echec_matiere }}%
+            </text>
+          </svg>
+
+          <p class="text-center">Risque d'échec par rapport à la matière</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- COLONNE TABLEAU -->
+    <div class="col-lg-9 col-md-8">
+      <div class="table-presence">
+
+        <table class="table table-striped mb-4">
+          <thead class="thead-dark">
+            <tr>
+              <th>#</th>
+              <th>First</th>
+              <th>Last</th>
+              <th>Handle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>1</th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+            </tr>
+            <tr>
+              <th>2</th>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+              <th>3</th>
+              <td>Larry</td>
+              <td>the Bird</td>
+              <td>@twitter</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="table table-striped">
+          <thead class="thead-light">
+            <tr>
+              <th>#</th>
+              <th>First</th>
+              <th>Last</th>
+              <th>Handle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>1</th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+            </tr>
+            <tr>
+              <th>2</th>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+              <th>3</th>
+              <td>Larry</td>
+              <td>the Bird</td>
+              <td>@twitter</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+    
+
+{% endblock %}
