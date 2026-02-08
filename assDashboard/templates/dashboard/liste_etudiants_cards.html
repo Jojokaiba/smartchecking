@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Étudiants{% endblock %}
+
+{% block content %}
+<h3 class="text-center mb-4">Liste des étudiants</h3>
+
+<!-- 🔹 FORMULAIRE DE FILTRE -->
+<form method="get" class="row g-3 mb-4">
+
+    <!-- Filtre Année -->
+    <div class="col-md-4">
+        <select name="annee" class="form-select">
+            <option value="">-- Année --</option>
+            {% for value, label in niveaux %}
+                <option value="{{ value }}" {% if request.GET.annee == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Filtre Mention -->
+    <div class="col-md-4">
+        <select name="mention" class="form-select">
+            <option value="">-- Mention --</option>
+            {% for value, label in mentions %}
+                <option value="{{ value }}" {% if request.GET.mention == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Boutons -->
+    <div class="col-md-4 d-flex gap-2">
+        <button class="btn btn-primary flex-grow-1">Filtrer</button>
+        <a href="{% url 'liste_etudiants_cards' %}" class="btn btn-secondary flex-grow-1">Reset</a>
+    </div>
+
+</form>
+
+<!-- 🔹 LISTE DES ÉTUDIANTS -->
+<div class="row g-4">
+    {% if etudiants %}
+        {% for etu in etudiants %}
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ etu.nom }} {{ etu.prenoms }}</h5>
+                    <p class="mb-1"><strong>Matricule :</strong> {{ etu.matricule }}</p>
+                    <p class="mb-1"><strong>Mention :</strong> {{ etu.mention }}</p>
+                    <p class="mb-1"><strong>Genre :</strong> {{ etu.genre }}</p>
+                    <p><strong>Année :</strong> {{ etu.niveau }}</p>
+                    {% if etu.photo %}
+                        <img src="{{ etu.photo.url }}" alt="Photo de {{ etu.nom }}" class="img-fluid mb-2">
+                    {% endif %}
+                    <a href="{% url 'profil_eleve' etu.id %}" class="btn btn-primary mt-2">Voir profil</a>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center mt-4">Aucun étudiant trouvé pour ces critères.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
+    'assDashboard',
 ]
-
+AUTH_USER_MODEL = 'accounts.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -74,8 +76,12 @@ WSGI_APPLICATION = 'SmartChecking.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'smartchecking_db',
+        'USER': 'rotsy',
+        'PASSWORD': 'sosoraza',       # mot de passe
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
