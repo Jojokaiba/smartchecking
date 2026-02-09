@@ -3,7 +3,8 @@
 {% load static %}
 {% block content %}
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'dashboard/profile.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard/css/profile.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 {% endblock %}
 
 <h1>Analytics Dashboard</h1>
@@ -44,9 +45,7 @@
 
           <svg class="progress-ring mx-auto d-block" width="160" height="160" viewBox="0 0 160 160">
             <circle class="progress-ring__background" cx="80" cy="80" r="70"/>
-            <circle class="progress-ring__circle"
-              cx="80" cy="80" r="70"
-              style="--dashoffset: {{ dashoffset_general }};" />
+            <circle class="progress-ring__circle" cx="80" cy="80" r="70" style="--dashoffset: {{ dashoffset_general }};" />
             <text x="80" y="80" text-anchor="middle"
               dominant-baseline="middle" class="progress-text">
               {{ risque_echec_general }}%
