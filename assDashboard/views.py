@@ -129,9 +129,10 @@ def ajouter_matiere(request):
         )
 
         messages.success(request, "Matière ajoutée avec succès.")
-        return redirect("dashboard/ajouter_matieres")
+ #       return redirect("dashboard/ajout_matieres.html")
 
     return render(request, "dashboard/ajout_matieres.html", {
+        "nom": nom,
         "mentions": mentions,
         "niveaux": niveaux,
         "semestres": semestres,
