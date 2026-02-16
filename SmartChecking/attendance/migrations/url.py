@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('qr/', views.generate_qr, name='generate_qr'),
+    path("generate_qr/<str:student_id>/", views.generate_qr),
+    path("scan/<uuid:token>/", views.scan_qr),
 ]
