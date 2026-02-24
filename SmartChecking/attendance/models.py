@@ -11,5 +11,5 @@ class Student(models.Model):
 
 class Attendance(models.Model):    
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    
+
     date = models.DateTimeField(default=timezone.now)
