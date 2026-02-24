@@ -112,6 +112,7 @@ def ajouter_matiere(request):
     mentions = MENTION_CHOICES
     niveaux = LEVEL_CHOICES
     semestres = Semestre.SEMESTRES
+    nom = ""
 
     if request.method == "POST":
         nom = request.POST.get("nom_matiere")
@@ -129,7 +130,7 @@ def ajouter_matiere(request):
         )
 
         messages.success(request, "Matière ajoutée avec succès.")
- #       return redirect("dashboard/ajout_matieres.html")
+
 
     return render(request, "dashboard/ajout_matieres.html", {
         "nom": nom,
