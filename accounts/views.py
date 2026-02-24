@@ -6,7 +6,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from assDashboard.models import Student
 from accounts.decorators import role_required
-
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from assDashboard.models import Student, Attendance
 
 def login_view(request):
     if request.method == 'POST':
@@ -89,3 +91,10 @@ def admin_view(request):
         return HttpResponseForbidden("Accès réservé à l'administrateur")
 
     return redirect('ajout_eleve')
+
+def scan_qr(request, token):
+    student = get_object_or_404(Student, qr_token=token)
+
+    Attendance.objects.create(student=student)
+
+    return HttpResponse(f"Presence enregistree pour {student.name}")

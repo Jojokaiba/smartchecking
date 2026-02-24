@@ -45,7 +45,10 @@
         </div>
     </div>
 </div>
-
-
+{% if etudiant.matricule %}
+    <img src="{% url 'generate_qr' etudiant.matricule %}" alt="QR Code" class="img-fluid" style="max-width:200px;">
+{% else %}
+    <p>QR Code non disponible : matricule manquant</p>
+{% endif %}
 </body>
 </html>

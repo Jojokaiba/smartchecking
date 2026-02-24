@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -52,10 +54,7 @@ class Student(models.Model):
     photo = models.ImageField(upload_to='students/photos/', null=True, blank=True)
     genre = models.CharField(max_length=1, choices=GENRE_CHOICES, null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        if not self.matricule:
-            self.matricule = str(uuid.uuid4())[:8].upper()
-        super().save(*args, **kwargs)
+    qr_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     def clean(self):
         if self.niveau not in MENTION_NIVEAUX.get(self.mention, []):
@@ -91,4 +90,10 @@ class Matiere(models.Model):
         unique_together = ('nom', 'mention', 'semestre', 'annee')
 
     def __str__(self):
-        return f"{self.nom} ({self.mention.nom}, {self.semestre.nom})"
+        mention_affiche = self.get_mention_display()
+        return f"{self.nom} ({mention_affiche}, Semestre {self.semestre})"
+
+class Attendance(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+
+    date = models.DateTimeField(default=timezone.now())

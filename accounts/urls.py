@@ -1,6 +1,6 @@
 # accounts/urls.py
 from django.urls import path
-from . import views  # ici on importe nos vues définies ci-dessus
+from . import views, view_gen_qr  # ici on importe nos vues définies ci-dessus
 
 #l'admin accede à un tout autre url que les eleves
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     ),
     path('delegue/', views.delegue_page, name='delegue_page'),
     path('eleve/', views.eleve_page, name='eleve_page'),
+path('qr/<str:matricule>/', view_gen_qr.generate_qr, name='generate_qr'),
 ]
