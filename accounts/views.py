@@ -4,7 +4,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-
+from assDashboard.models import Student
 from accounts.decorators import role_required
 
 
@@ -50,6 +50,7 @@ def logout_view(request):
 def delegue_page(request):
     if request.user.role not in ['DELEGATE', 'SUPPLEANT']:
         return HttpResponseForbidden("Accès refusé")
+
     return render(request, 'accounts/delegue.html')
 
 
@@ -57,7 +58,10 @@ def delegue_page(request):
 def eleve_page(request):
     if request.user.role != 'ELEVE':
         return HttpResponseForbidden("Accès refusé")
-    return render(request, 'accounts/eleve.html')
+    etudiant = Student.objects.get(user=request.user)
+
+    return render(request, "accounts/eleve.html", {"etudiant": etudiant})
+
 
 
 def admin_login_view(request):
