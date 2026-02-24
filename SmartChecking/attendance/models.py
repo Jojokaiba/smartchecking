@@ -1,10 +1,15 @@
 from django.db import models
+from django.utils import timezone
+import uuid
 
 # Create your models here.
     # a ajouter aux modele student
-        class Student(models.Model):
+class Student(models.Model):
             student_id = models.CharField(max_length=50, unique=True)
-            qr_token = models.UUIDField(default=uuid.uuid4, editable=false, unique=True)
-class Attendance(models.Model):
+
+            qr_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+class Attendance(models.Model):    
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    
+    date = models.DateTimeField(default=timezone.now)
