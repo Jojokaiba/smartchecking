@@ -35,7 +35,11 @@
             <label for="id_prenoms" class="form-label">Prénoms</label>
             {{ form.prenoms }}
         </div>
-
+        <div class="mb-3">
+            <label for="matricule" class="form-label">Matricule</label>
+            {{ form.matricule }}
+            {{ form.matricule.errors }}
+        </div>
         <!-- Genre -->
         <div class="mb-3">
             <label for="id_genre" class="form-label">Genre</label>

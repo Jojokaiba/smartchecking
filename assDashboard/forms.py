@@ -10,6 +10,7 @@ User = get_user_model()
 
 class StudentCreateForm(forms.ModelForm):
     username = forms.CharField(label="Nom d'utilisateur")
+    matricule = forms.CharField(label="Matricule", required=True)
     email = forms.EmailField(label="Email de l'étudiant")
     password = forms.CharField(label="Mot de passe", widget=forms.PasswordInput)
     genre = forms.ChoiceField(label="Genre", choices=Student.GENRE_CHOICES)
@@ -21,6 +22,7 @@ class StudentCreateForm(forms.ModelForm):
         model = Student
         fields = [
             'username',
+            'matricule',
             'nom',
             'prenoms',
             'email',
