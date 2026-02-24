@@ -1,5 +1,7 @@
 # A revoir :
-- affichage profil par élève
-- vérification des filtres
-- redirection/affichage des erreurs
-- affichage de la photo de l'étudiant dans liste_etudiants_cards
+- Design page élève
+- Messages erreur et succès
+- Design liste étudiants
+- ajout bouton retour dans profil et ap ajout matière
+- nom de matière ne doit pas contenir de caractère spéciaux
+- same pour élève mais pas de chiffre aussi
