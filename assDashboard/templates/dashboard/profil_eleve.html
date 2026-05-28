@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Profil de {{ etudiant.nom }}{% endblock %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'dashboard/css/profile.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+
+<h1>Analytics Dashboard</h1>
+
+<!-- Cartes infos étudiant -->
+<div class="cards mt-4">
+    <div class="card" style="border-top: 5px solid blue;">
+        <p>Nom: {{ etudiant.nom }}</p>
+        <p>Prénom : {{ etudiant.prenoms }}</p>
+        <p>Matricule : {{ etudiant.matricule }}</p>
+    </div>
+    <div class="card" style="border-top: 5px solid red;">
+        <p>Email : {{ etudiant.user.email }}</p>
+    </div>
+    <div class="card" style="border-top: 5px solid blue;">
+        <p>Mention : {{ etudiant.mention }}</p>
+        <p>Niveau : {{ etudiant.niveau }}</p>
+    </div>
+
+    <!-- Statut présence du jour -->
+    <div class="card" style="border-top: 5px solid {% if present_aujourd_hui %}green{% else %}orange{% endif %};">
+        {% if present_aujourd_hui %}
+            <h2>✅ Présent</h2>
+        {% else %}
+            <h2>❌ Absent</h2>
+        {% endif %}
+        <p>Aujourd'hui ({{ today }})</p>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+  <div class="row align-items-start">
+
+    <!-- COLONNE CERCLES -->
+    <div class="col-lg-3 col-md-4">
+      <div class="pourcentage-ring">
+
+        <div class="progress-card mb-5">
+          <h5 class="text-center">Présence (30 jours)</h5>
+          <svg class="progress-ring mx-auto d-block" width="160" height="160" viewBox="0 0 160 160">
+            <circle class="progress-ring__background" cx="80" cy="80" r="70"/>
+            <circle class="progress-ring__circle" cx="80" cy="80" r="70"
+              style="--dashoffset: {{ dashoffset_general }};" />
+            <text x="80" y="80" text-anchor="middle" dominant-baseline="middle" class="progress-text">
+              {{ taux_presence }}%
+            </text>
+          </svg>
+          <p class="text-center">{{ nb_presences_30j }} présence(s) sur 30 jours</p>
+        </div>
+
+        <div class="progress-card">
+          <h5 class="text-center">Risque d'échec</h5>
+          <svg class="progress-ring mx-auto d-block" width="160" height="160" viewBox="0 0 160 160">
+            <circle class="progress-ring__background" cx="80" cy="80" r="70"/>
+            <circle class="progress-ring__circle" cx="80" cy="80" r="70"
+              style="--dashoffset: {{ dashoffset_matiere }};" />
+            <text x="80" y="80" text-anchor="middle" dominant-baseline="middle" class="progress-text">
+              {{ risque_echec_matiere }}%
+            </text>
+          </svg>
+          <p class="text-center">Risque par matière</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- COLONNE TABLEAU PRÉSENCES -->
+    <div class="col-lg-9 col-md-8">
+      <div class="table-presence">
+        <h5 class="mb-3">Historique des présences</h5>
+
+        {% if presences %}
+        <table class="table table-striped mb-4">
+          <thead class="thead-dark">
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Heure</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in presences %}
+            <tr>
+              <th>{{ forloop.counter }}</th>
+              <td>{{ p.date|date:"d/m/Y" }}</td>
+              <td>{{ p.date|time:"H:i" }}</td>
+              <td>
+                <span class="badge badge-success">Présent</span>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="alert alert-warning">
+          Aucune présence enregistrée pour cet étudiant.
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
