@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-kyyi3#lk$oa3tp%c&6_8+=)61w4-r5#bpk$o%2_f2@pz9^1ct(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.5']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -80,11 +80,11 @@ WSGI_APPLICATION = 'SmartChecking.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'smartchecking_db',
-        'USER': 'rotsy',
-        'PASSWORD': 'sosoraza',       # mot de passe
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME', 'django_db'),
+        'USER': os.getenv('DB_USER', 'django_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'django_pass'),
+        'HOST': os.getenv('DB_HOST', 'db'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 

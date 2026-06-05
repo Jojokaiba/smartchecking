@@ -12,6 +12,25 @@ from assDashboard.models import Student, Attendance
 from accounts.decorators import role_required
 
 
+# ------------------
+# VUE PAGE D'ACCUEIL
+#-------------------
+
+def home(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    if request.user.role == 'ADMIN':
+        return redirect('/dashboard/')
+
+    if request.user.role in ['DELEGATE', 'SUPPLEANT']:
+        return redirect('delegue_page')
+
+    if request.user.role == 'ELEVE':
+        return redirect('eleve_page')
+
+    return redirect('login')
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -96,12 +115,42 @@ def admin_view(request):
 # -----------------------
 # SCAN QR — vérification présence avec date
 # -----------------------
+#def scan_qr(request, token):
+#    student = get_object_or_404(Student, qr_token=token)
+#
+#    today = timezone.now().date()
+#
+#    # Vérifie si une présence existe déjà aujourd'hui pour cet étudiant
+#    deja_present = Attendance.objects.filter(
+#        student=student,
+#        date__date=today
+#    ).exists()
+#
+#    if deja_present:
+#        return HttpResponse(
+#            f"⚠️ Présence déjà enregistrée aujourd'hui ({today}) pour {student}.",
+#            content_type="text/plain; charset=utf-8"
+#        )
+#
+#    Attendance.objects.create(student=student, date=timezone.now())
+#
+  #  return HttpResponse(
+  #      f"✅ Présence enregistrée pour {student} le {today}.",
+  #      content_type="text/plain; charset=utf-8"
+  #  )
+@login_required
 def scan_qr(request, token):
+
+    # 1. Vérification des rôles
+    if request.user.role not in ["DELEGATE", "ADMIN","SUPPLEANT"]:
+        return HttpResponseForbidden("Accès refusé")
+
+    # 2. Récupération étudiant
     student = get_object_or_404(Student, qr_token=token)
 
     today = timezone.now().date()
 
-    # Vérifie si une présence existe déjà aujourd'hui pour cet étudiant
+    # 3. Vérifie déjà présent aujourd'hui
     deja_present = Attendance.objects.filter(
         student=student,
         date__date=today
@@ -112,10 +161,13 @@ def scan_qr(request, token):
             f"⚠️ Présence déjà enregistrée aujourd'hui ({today}) pour {student}.",
             content_type="text/plain; charset=utf-8"
         )
-
-    Attendance.objects.create(student=student, date=timezone.now())
+    # 4. Création présence
+    Attendance.objects.create(
+        student=student,
+        date=timezone.now()
+    )
 
     return HttpResponse(
         f"✅ Présence enregistrée pour {student} le {today}.",
         content_type="text/plain; charset=utf-8"
-    )
+    )        
